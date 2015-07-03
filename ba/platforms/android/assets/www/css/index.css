@@ -1,0 +1,27 @@
+table {
+	border: 1px solid black;
+	width: 100%;
+}
+
+table.normal {
+}
+
+table.grayed {
+	background-color: gray;
+}
+
+td {
+	border: 1px solid black;
+	padding: 3px 20px 3px 20px;
+}
+
+th {
+	border: 1px solid black;
+	text-align: center;
+	padding: 3px 20px 3px 20px;
+}
+
+td.number {
+	text-align: right;
+}
+
