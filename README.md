@@ -2,10 +2,10 @@
 
 Simple PhoneGap application to query bitcoin prices on bitcoinaverage.org
 
-# Compile and deploy
+# Compile
 
-go to `ba` folder, and issue following command:
+This app was only tested on android. To build, go to `ba` folder, and issue following command:
 
-    $ cordova run android
+    $ cordova build android --release
 
      

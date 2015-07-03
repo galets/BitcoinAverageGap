@@ -1,40 +1,79 @@
 <!DOCTYPE html>
-<!--
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
-<html>
+<html ng-app="myApp">
     <head>
         <meta charset="utf-8" />
+        <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
         <meta name="format-detection" content="telephone=no" />
         <meta name="msapplication-tap-highlight" content="no" />
-        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link rel="stylesheet" media="screen" href="css/bootstrap.min.css" />
+        <link rel="stylesheet" media="screen" href="css/bootstrap-theme.min.css" />
         <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <title>Hello World</title>
+        <title>Bitcoin Average Reports</title>
     </head>
-    <body>
-        <div class="app">
-            <h1>Apache Cordova</h1>
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
+    <body ng-controller="IndexController">
+        <div class="container">
+            <h1>Bitcoin Average</h1>
+            
+            <div>
+                <table ng-class="data_loading ? 'grayed' : 'normal'">
+                    <tr><td>Last</td><td class="number">
+                            <span ng-if="data_loading">Loading...</span>
+                            <span ng-if="!data_loading">
+                                <span ng-if="data.last > data['24h_avg']" class="glyphicon glyphicon-arrow-up" style="color:green;" aria-hidden="true"></span>
+                                <span ng-if="data.last < data['24h_avg']" class="glyphicon glyphicon-arrow-down" style="color:red;" aria-hidden="true"></span>
+                                {{data.last | number:2}}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr><td>Ask</td><td class="number">
+                            <span ng-if="data_loading">Loading...</span>
+                            <span ng-if="!data_loading">{{data.ask | number:2}}</span>
+                        </td>
+                    </tr>
+                    <tr><td>Bid</td><td class="number">
+                            <span ng-if="data_loading">Loading...</span>
+                            <span ng-if="!data_loading">{{data.bid | number:2}}</span>
+                        </td>
+                    </tr>
+                    <tr><td>24h Average</td><td class="number">
+                            <span ng-if="data_loading">Loading...</span>
+                            <span ng-if="!data_loading">{{data["24h_avg"] | number:2}}</span>
+                        </td>
+                    </tr>
+                    <tr><td>Volume</td><td class="number">
+                            <span ng-if="data_loading">Loading...</span>
+                            <span ng-if="!data_loading">{{data.total_vol | number:2}}</span>
+                        </td>
+                    </tr>
+                    <!--tr><td>timestamp</td><td>{{data.timestamp}}</td></tr-->
+                </table>
             </div>
+            
+            <h2>By Exchange</h2>
+            
+            <div>
+                <table ng-class="exchanges_loading ? 'grayed' : 'normal'">
+                    <tr>
+                        <th>Data</th>
+                        <th>Price</th>
+                        <th>Volume %</th>
+                    </tr>
+                    <tr ng-repeat="x in exchanges | volume_filter:x | orderBy:'-volume_percent'">
+                        <td>{{x.display_name}}</td>
+                        <td class="number">{{x.rates.last | number:2}}</td>
+                        <td class="number">{{x.volume_percent | number:2}}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <br/>            
+            <a ng-click="refresh()">Refresh</a>
+            
         </div>
+        <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+        <script type="text/javascript" src="js/angular.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
     </body>

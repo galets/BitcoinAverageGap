@@ -5,10 +5,12 @@
     ],
     "version": "0.0.1",
     "name": "BitcoinAverage",
-    "description": "A sample Apache Cordova application that responds to the deviceready event.",
+    "description": "Bitcoin price reporting from bitcoinaverage.org",
     "developer": {
-        "name": "Apache Cordova Team",
-        "url": "http://cordova.io"
+        "name": "Galets",
+        "url": "http://www.galets.com"
     },
-    "icons": {}
+    "icons": {
+        "57": "/icon/icon-57.png"
+    }
 }

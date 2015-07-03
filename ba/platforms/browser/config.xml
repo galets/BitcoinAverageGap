@@ -2,11 +2,12 @@
 <widget id="com.galets.bitcoinaverage" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>BitcoinAverage</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+        Bitcoin price reporting from bitcoinaverage.org
     </description>
-    <author email="dev@cordova.apache.org" href="http://cordova.io">
-        Apache Cordova Team
+    <author email="ba473@mx1.galets.net" href="http://www.galets.com">
+        Galets
     </author>
     <content src="index.html" />
     <access origin="*" />
+    <icon density="mdpi" height="57" platform="ios" src="res/ios/icon.png" width="57" />
 </widget>

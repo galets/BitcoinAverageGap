@@ -10,4 +10,5 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
+    <icon density="mdpi" height="57" platform="ios" src="res/ios/icon.png" width="57" />
 </widget>

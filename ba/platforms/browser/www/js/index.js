@@ -1,51 +1,52 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
-var app = {
-    // Application Constructor
-    initialize: function() {
-        this.bindEvents();
-    },
-    // Bind Event Listeners
-    //
-    // Bind any events that are required on startup. Common events are:
-    // 'load', 'deviceready', 'offline', and 'online'.
-    bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
-    },
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicitly call 'app.receivedEvent(...);'
-    onDeviceReady: function() {
-        app.receivedEvent('deviceready');
-    },
-    // Update DOM on a Received Event
-    receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
+var myApp = angular.module('myApp',[ ]);
 
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
+myApp.filter('volume_filter', function() {
+  return function(items, args) {
+    var filtered = [];
+    angular.forEach(items, function(item) {
+      if (item.volume_percent && item.volume_percent > 1) {
+        filtered.push(item);
+      }
+    });
+    return filtered;
+  };
+});
 
-        console.log('Received Event: ' + id);
-    }
-};
+myApp.controller('IndexController', ['$scope', '$http', '$interval',
+  function($scope, $http, $interval) {
+    $scope.data = null;
+    $scope.data_loading = true;
+    $scope.exchanges = null;
+    $scope.exchanges_loading = true;
+      
+    $scope.reload = function() {
+        $scope.data_loading = true;
+        $http.get("https://api.bitcoinaverage.com/ticker/USD/")
+          .success(function(data, status, headers, config) {
+              $scope.data = data;
+              $scope.data_loading = false;
+          })
+          .error(function(data, status, headers, config) {
+              $scope.data = null;
+              $scope.data_loading = false;
+          });
+          
+        $scope.exchanges_loading = true;
+        $http.get("https://api.bitcoinaverage.com/exchanges/USD")
+          .success(function(data, status, headers, config) {
+              $scope.exchanges = data;
+              $scope.exchanges_loading = false;
+          })
+          .error(function(data, status, headers, config) {
+              $scope.exchanges = null;
+              $scope.exchanges_loading = false;
+          });
+    };
+    
+    $scope.reload();
+    
+    $interval(function() {
+        $scope.reload();
+    }, 20000);
 
-app.initialize();
+}]);
